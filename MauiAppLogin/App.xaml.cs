@@ -1,4 +1,5 @@
 ﻿
+
 namespace MauiAppLogin
 {
     public partial class App : Application
@@ -6,8 +7,23 @@ namespace MauiAppLogin
         public App()
         {
             InitializeComponent();
+            
+            string? usuario_logado = null;
+            Task.Run(async () =>
+            {
+                usuario_logado = await SecureStorage.Default.GetAsync("usuario_logado");
 
-            MainPage = new AppShell();
+                if (usuario_logado == null)
+                {
+                    MainPage = new login();
+                }
+                else 
+                { 
+                MainPage = new protegida();
+                }
+            });
+
+            MainPage = new login();
         }
 
         protected override Window CreateWindow(IActivationState activationState)
